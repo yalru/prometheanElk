@@ -308,6 +308,7 @@ services:
     restart: unless-stopped
     ports:
       - 127.0.0.1:9090:9090
+      - 127.0.0.1:9201:9201
     networks:
       - elastic
     volumes:
