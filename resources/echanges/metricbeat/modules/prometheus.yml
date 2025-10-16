@@ -3,8 +3,11 @@
 
 - module: prometheus
   period: 5s
-  hosts: ["localhost:9090"]
+  hosts: ["tomcat:9115"]
   metrics_path: /metrics
+  metrics_filters:
+    include: [ "java_lang_compressed_.*" ]
+    exclude: [ "system.cpu.system.*" ]
   #metrics_filters:
   #  include: []
   #  exclude: []

@@ -23,7 +23,7 @@ metricbeat.config.modules:
 
 metricbeat.modules:
   - module: prometheus
-    period: 5s
+    period: 7s
     metricsets: ["collector"]
     hosts: ["localhost:9115"] ## port set in docker-compose : jmx_prometheus_javaagent-1.4.0.jar=9115
     metrics_path: /metrics
