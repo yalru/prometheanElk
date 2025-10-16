@@ -2,9 +2,4 @@ lowercaseOutputName: true
 lowercaseOutputLabelNames: true
 
 rules:
-  - pattern: 'java.lang:type=Memory'
-  - pattern: 'java.*'
-  - pattern: 'Catalina<type=DataSource, class=javax.sql.DataSource, name="jdbc/postgres", connectionpool=connections><>(\w+): (\d+)'
-    name: jvm_process_jdbc_$1
-    value: $2
-    type: GAUGE
+  - pattern: '.*'
