@@ -5,9 +5,11 @@
   period: 5s
   hosts: ["tomcat:9115"]
   metrics_path: /metrics
+  use_types: true
+  rate_counters: true
   metrics_filters:
-    include: [ "java_lang_compressed_.*" ]
-    exclude: [ "system.cpu.system.*" ]
+    include: [ "*catalina_threadpool_*" ]
+    #exclude: [ "system.cpu.system.*" ]
   #metrics_filters:
   #  include: []
   #  exclude: []
