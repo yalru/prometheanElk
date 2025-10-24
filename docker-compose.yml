@@ -198,6 +198,7 @@ services:
 
   ##kibana contener
   kibana:
+    container_name: kibana
     depends_on:
       es01:
         condition: service_healthy
@@ -258,6 +259,27 @@ services:
 #      retries: 12
 #      test: curl --write-out 'HTTP %{http_code}' --fail --silent --output /dev/null http://localhost:8200/
 
+  ## contener for the apm-server
+  apm-server:
+    image: docker.elastic.co/apm/apm-server:${STACK_VERSION}
+    container_name: apm-server
+    restart: unless-stopped
+   # user: root
+    depends_on:
+      kibana:
+        condition: service_healthy
+    environment:
+      - ELASTICSEARCH_HOSTS=https://es01:9200
+      - ELASTICSEARCH_USERNAME=elastic
+      - ELASTIC_PASSWORD=elastic
+      - kibana.host=http://kibana:5601
+    volumes:
+      - "./resources/echanges/apm-server:/home/echanges/"
+    ports:
+      - 8200:8200
+    networks:
+      - elastic
+
 ## image: docker.elastic.co/elastic-agent/elastic-agent:${STACK_VERSION} 8.17.4   vs actual 7.17.23
 ## no fleet server : standalone agents
 #  fleet-server:
@@ -289,6 +311,7 @@ services:
       - 127.0.0.1:8092:8092
       - 127.0.0.1:9093:9093
       - 127.0.0.1:9115:9115
+      - 127.0.0.1:8220:8220
     environment:
       - "CATALINA_OPTS=\
       -javaagent:/usr/local/tomcat/bin/monitoring/jmx_prometheus_javaagent-1.4.0.jar=9115:/usr/local/tomcat/bin/monitoring/config.yaml"
@@ -300,6 +323,7 @@ services:
       - "./tomcat/logs:/usr/local/tomcat/logs"
       - "./resources/echanges:/home/echanges/"
       - "./resources/prom/jmxExporter/:/usr/local/tomcat/bin/monitoring/"
+      - "./resources/elk/elastic-apm-agent-1.53.0.jar:/usr/local/tomcat/bin/monitoring/elastic-apm-agent-1.53.0.jar"
 
 ## docker run --name prometheus -d -p 127.0.0.1:9090:9090 prom/prometheus
   prometheus:
