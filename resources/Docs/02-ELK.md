@@ -11,6 +11,13 @@ install a fleetserver
 ![fleet-server-agent-policies-diagram.png](picts/fleet-server-agent-policies-diagram.png)
 
 
+
+https://www.elastic.co/docs/reference/kibana/configuration-reference/fleet-settings#fleet-data-visualizer-settings
+
+
+
+
+
 ## Elastic-agent
     - scrap JMX prometheus exporter
 
@@ -23,9 +30,27 @@ This means the deployment steps are similar to any Elastic Agent, except that yo
 Typically—especially in large-scale deployments—this agent is dedicated to running Fleet Server as an Elastic Agent communication host and is not configured for data collection.
 
 
+https://www.elastic.co/blog/getting-started-with-the-elastic-stack-and-docker-compose
+https://www.elastic.co/blog/getting-started-with-the-elastic-stack-and-docker-compose-part-2
+
+
+
+
+
+
 
 
 ## NOTES
 
 list of 
 https://localhost:9200/_cat/indices
+
+
+
+Kibana cannot reach the Elastic Package Registry, which provides Elastic Agent integrations
+To view these integrations, configure a proxy server(external, opens in a new tab or window) or host your own registry(external, opens in a new tab or window).
+
+
+https://www.elastic.co/docs/reference/fleet/air-gapped
+
+
