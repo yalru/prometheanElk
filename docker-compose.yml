@@ -314,6 +314,8 @@ services:
       - 127.0.0.1:8220:8220
     environment:
       - "CATALINA_OPTS=\
+      -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=1099 -Dcom.sun.management.jmxremote.rmi.port=1099 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=127.0.0.1 \
+      -javaagent:/usr/local/tomcat/bin/monitoring/elastic-apm-agent-1.54.0.jar -Delastic.apm.service_name=TestLocal -Delastic.apm.application_packages=* -Delastic.apm.server_url=http://host.docker.internal:8200 -Delastic.apm.environment=TEST \
       -javaagent:/usr/local/tomcat/bin/monitoring/jmx_prometheus_javaagent-1.4.0.jar=9115:/usr/local/tomcat/bin/monitoring/config.yaml"
     restart: unless-stopped
 #    networks:
@@ -323,7 +325,7 @@ services:
       - "./tomcat/logs:/usr/local/tomcat/logs"
       - "./resources/echanges:/home/echanges/"
       - "./resources/prom/jmxExporter/:/usr/local/tomcat/bin/monitoring/"
-      - "./resources/elk/elastic-apm-agent-1.53.0.jar:/usr/local/tomcat/bin/monitoring/elastic-apm-agent-1.53.0.jar"
+      - "./resources/elk/elastic-apm-agent-1.54.0.jar:/usr/local/tomcat/bin/monitoring/elastic-apm-agent-1.54.0.jar"
 
 ## docker run --name prometheus -d -p 127.0.0.1:9090:9090 prom/prometheus
   prometheus:
