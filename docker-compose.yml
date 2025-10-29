@@ -232,8 +232,12 @@ services:
       - ELASTICSEARCH_PASSWORD=${KIBANA_PASSWORD}
       - ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES=config/certs/ca/ca.crt
       - xpack.fleet.agents.enabled=true
-      - xpack.fleet.isAirGapped=true
+      - xpack.fleet.isAirGapped=false
       - ELASTIC_APM_SECRET_TOKEN=${ELASTIC_APM_SECRET_TOKEN}
+      - XPACK_SECURITY_ENCRYPTIONKEY=${ENCRYPTION_KEY}
+      - XPACK_ENCRYPTEDSAVEDOBJECTS_ENCRYPTIONKEY=${ENCRYPTION_KEY}
+      - XPACK_REPORTING_ENCRYPTIONKEY=${ENCRYPTION_KEY}
+      - XPACK_REPORTING_KIBANASERVER_HOSTNAME=localhost
       ##- NODE_TLS_REJECT_UNAUTHORIZED=0
     mem_limit: ${MEM_LIMIT}
     healthcheck:
@@ -248,6 +252,7 @@ services:
 
 
   fleet-server:
+    container_name: fleet-server
     depends_on:
       kibana:
         condition: service_healthy
@@ -271,6 +276,8 @@ services:
       - FLEET_SERVER_ELASTICSEARCH_CA=/certs/ca/ca.crt
       - FLEET_SERVER_ELASTICSEARCH_HOST=https://es01:9200
       - FLEET_SERVER_ELASTICSEARCH_INSECURE=true
+      - FLEET_SERVER_SERVICE_TOKEN=AAEAAWVsYXN0aWMvZmxlZXQtc2VydmVyL3Rva2VuZmxlZXQ6TnBvUXoySE1URnkwbEppZk4wZG5VZw
+      - FLEET_SERVER_POLICY_ID=15e3e799-7db0-4518-b1da-c47083a6c50c
       - FLEET_SERVER_ENABLE=1
       - FLEET_SERVER_CERT=/certs/fleet-server/fleet-server.crt
       - FLEET_SERVER_CERT_KEY=/certs/fleet-server/fleet-server.key
@@ -282,6 +289,10 @@ services:
       - KIBANA_FLEET_USERNAME=elastic
       - KIBANA_FLEET_PASSWORD=${ELASTIC_PASSWORD}
       - KIBANA_HOST=http://kibana:5601
+#      - XPACK_SECURITY_ENCRYPTIONKEY=${ENCRYPTION_KEY}
+#      - XPACK_ENCRYPTEDSAVEDOBJECTS_ENCRYPTIONKEY=${ENCRYPTION_KEY}
+#      - XPACK_REPORTING_ENCRYPTIONKEY=${ENCRYPTION_KEY}
+#      - XPACK_REPORTING_KIBANASERVER_HOSTNAME=localhost
 
 
   ## and now the usefull stufff for testing :
@@ -289,7 +300,8 @@ services:
   tomcat:
     image: tomcat:9-jdk17-openjdk
     ports:
-      - 127.0.0.1:8888:8080
+      - 127
+      - :8888:8080
       - 127.0.0.1:8092:8092
       - 127.0.0.1:9093:9093
       - 127.0.0.1:9115:9115
@@ -310,7 +322,7 @@ services:
 
 ## docker run --name prometheus -d -p 127.0.0.1:9090:9090 prom/prometheus
   prometheus:
-    hostname: prometheus-server
+    container_name: prometheus-server
     image: prom/prometheus
     restart: unless-stopped
     ports:
