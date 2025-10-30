@@ -52,6 +52,101 @@ FLEET_SERVER_SERVICE_TOKEN=AAEAAWVsYXN0aWMvZmxlZXQtc2VydmVyL3Rva2VuZmxlZXQ6TnBvU
 
 
 
+create fleet policy - fleet-server-policy
+FLEET_SERVER_POLICY_ID=fleet-server-policy
+https://www.elastic.co/docs/reference/fleet/create-policy-no-ui
+
+
+
+create a flet policy 
+
+curl -u elastic:elastic --request POST \
+--url http://localhost:5601/api/fleet/agent_policies?sys_monitoring=true \
+--header 'content-type: application/json' \
+--header 'kbn-xsrf: true' \
+--data '{"name":"AgentPolicy1","namespace":"default","monitoring_enabled":["logs","metrics"]}'
+
+AgentPolicy1 created,  
+
+Add integration to policy 
+[2025-10-29T09:44:00.889+00:00][ERROR][plugins.fleet] Error connecting to package registry: 
+request to https://epr.elastic.co/categories?kibana.version=9.2.0&spec.min=2.3&spec.max=3.5 
+failed, reason: self-signed certificate in certificate chain
+-> and no integrations available
+
+
+errors on launching fleet service 
+    2025-10-30 09:29:27 {"log.level":"error",
+    "@timestamp":"2025-10-30T08:29:27.235Z",
+    "log.origin":{"function":"github.com/elastic/elastic-agent/internal/pkg/agent/application/monitoring/reload.(*ServerReloader).Start",
+    "file.name":"reload/reload.go",
+    "file.line":58},"message":"Failed creating a server: failed to create api server: listen tcp 127.0.0.1:6791: bind: address already in use",
+    "log":{"source":"elastic-agent"},"ecs.version":"1.6.0"} 
+
+
+
+2025-10-30 10:18:32 {"log.level":"error",
+    "@timestamp":"2025-10-30T09:18:32.247Z",
+    "message":"failed to fetch elasticsearch version",
+    "component":{"binary":"fleet-server",
+    "dataset":"elastic_agent.fleet_server",
+    "id":"fleet-server-default",
+    "type":"fleet-server"},"log":{"source":"fleet-server-default"},"service.name":"fleet-server",
+    "service.type":"fleet-server",
+    "error.message":"dial tcp [::1]:9200: connect: connection refused",
+    "ecs.version":"1.6.0",
+    "ecs.version":"1.6.0"}
+2025-10-30 10:18:32 {"log.level":"warn",
+    "@timestamp":"2025-10-30T09:18:32.247Z",output configuration test
+    "message":"Failed Elasticsearch , using bootstrap values.",
+    "component":{"binary":"fleet-server",
+    "dataset":"elastic_agent.fleet_server",
+    "id":"fleet-server-default",
+    "type":"fleet-server"},"log":{"source":"fleet-server-default"},"service.type":"fleet-server",
+    "error.message":"dial tcp [::1]:9200: connect: connection refused",
+    "output":{"Elasticsearch":{"Headers":null,"Hosts":["localhost:9200"],"MaxConnPerHost":128,"MaxContentLength":104857600,"MaxRetries":3,"Path":"",
+    "Protocol":"https",
+    "ProxyDisable":false,"ProxyHeaders":{},"ProxyURL":"",
+    "ServiceToken":"[redacted]",                     _**Mutually exclusive with** --fleet-server-service-token-path._
+    "ServiceTokenPath":"",
+    "TLS":{"CASha256":null,"CATrustedFingerprint":"",
+    "CAs":["/certs/ca/ca.crt"],"Certificate":{"Certificate":"",
+    "Key":"",
+    "Passphrase":"",
+    "PassphrasePath":""},"CipherSuites":null,"CurveTypes":null,"Enabled":null,"Renegotiation":"never",
+    "VerificationMode":"none",
+    "Versions":null},"Timeout":90000000000},"Extra":null},"ecs.version":"1.6.0",
+    "service.name":"fleet-server",
+    "ecs.version":"1.6.0"}
+
+--fleet-server-service-token <string>
+Service token to use for communication with Elasticsearch. **Mutually exclusive with** --fleet-server-service-token-path.
+
+
+
+
+
+2025-10-30 10:19:43 {"log.level":"error",
+    "@timestamp":"2025-10-30T09:19:43.734Z",
+    "message":"failed to fetch elasticsearch version",
+    "component":{"binary":"fleet-server",
+    "dataset":"elastic_agent.fleet_server",
+    "id":"fleet-server-default",
+    "type":"fleet-server"},"log":{"source":"fleet-server-default"},"service.name":"fleet-server",
+    "service.type":"fleet-server",
+    "error.message":"dial tcp [::1]:9200: connect: connection refused",
+    "ecs.version":"1.6.0",
+    "ecs.version":"1.6.0"}
+
+
+
+https://www.elastic.co/docs/reference/fleet/agent-environment-variables#env-bootstrap-fleet-server
+
+FLEET_SERVER_ES_CERT
+FLEET_SERVER_CERT
+
+https://www.elastic.co/docs/reference/fleet/secure-connections
+
 
 
 
@@ -108,7 +203,12 @@ https://www.elastic.co/docs/reference/fleet/fleet-enrollment-tokens#create-fleet
 
 
 
+
 ## NOTES
+
+security 
+https://www.elastic.co/docs/deploy-manage/deploy/self-managed/installing-elasticsearch
+
 
 list of 
 https://localhost:9200/_cat/indices
@@ -160,3 +260,8 @@ XPACK_ENCRYPTEDSAVEDOBJECTS_KEYROTATION_DECRYPTIONONLYKEYS[1]="min-32-byte-long-
 
 
 
+https://fortuneedema.medium.com/simplifying-elastic-stack-management-with-docker-compose-8a0e6b02cea0
+
+
+
+https://evermight.com/docker-elk-2-agent-fleet-server-apm/

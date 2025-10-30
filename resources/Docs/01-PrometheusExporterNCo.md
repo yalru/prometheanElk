@@ -54,3 +54,25 @@ add data source prometheus
 /!\ for the docker-compose, the "host.docker.internal" is really important : localhost won't do 
 
     Save and go explore the view or build dashboards 
+
+### import dashboard as a json
+https://grafana.com/grafana/dashboards/7727-jvm-overview/
+https://grafana.com/api/dashboards/7727/revisions/1/download
+
+![grafanaDashboards001.png](picts/grafanaDashboards001.png)
+
+![grafanaDashboards002.png](picts/grafanaDashboards002.png)
+
+
+
+### deploy on AWS ECS 
+https://medium.com/@ahmadbilalch891/deploying-grafana-loki-and-prometheus-on-aws-ecs-with-efs-and-cloud-formation-part-3-of-3-24140ea8ccfb
+
+jfrog airbus : bitnami/prometheus12-09-25 17:21:16 +0200
+https://artifactory.2b82.aws.cloud.airbus.corp/ui/packages/docker:%2F%2Fbitnami%2Fprometheus?name=prometheus&type=packages
+docker pull r-bitnami-archive-docker-local.artifactory.2b82.aws.cloud.airbus.corp/bitnami/prometheus:sha256__6598ed4a6a4a69590dd6bc0f43abb9b1317a2fb78f4fadedaacb2168f2dd1160
+
+
+
+
+
