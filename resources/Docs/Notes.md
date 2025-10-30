@@ -88,15 +88,30 @@ localhost:9200
 2025-10-30 13:52:31 {"log.level":"info","@timestamp":"2025-10-30T12:52:31.497Z","message":"Found settings with recommended ram.","component":{"binary":"fleet-server","dataset":"elastic_agent.fleet_server","id":"fleet-server-default","type":"fleet-server"},"log":{"source":"fleet-server-default"},"ecs.version":"1.6.0","service.name":"fleet-server","service.type":"fleet-server","memory_mb":19998,"recommended_mb":16192,"ecs.version":"1.6.0"}
 
 
-
-
 curl -s --cacert /usr/share/elasticsearch/config/certs/ca/ca.crt https://localhost:9200 | grep -q 'missing authentication credentials',
-
 /usr/share/elasticsearch
 
 - certs:/usr/share/elasticsearch/config/certs
 
 
+
+
+config/certs/ca/ca.crt https:
+
+
+
+
+elastic-agent.yml
+
+This example configures an Elasticsearch output called default in the elastic-agent.yml file:
+
+outputs:
+    default:
+        type: elasticsearch
+        hosts: [127.0.0.1:9200]
+        username: elastic
+        password: elastic
+    
 
 
 
