@@ -78,4 +78,19 @@ https://www.elastic.co/docs/reference/apm/agents/java/setup-javaagent
 
 
 
+trying to connect to APM Server at http://host.docker.internal:8200/intake/v2/events.
+
+
+2025-11-03 15:54:37 03-Nov-2025 14:54:37.292 INFO [main] org.apache.catalina.startup.Catalina.start Server startup in [242] milliseconds
+2025-11-03 15:56:14 2025-11-03 14:56:14,142 [elastic-apm-server-reporter] ERROR co.elastic.apm.agent.report.AbstractIntakeApiHandler - Error trying to connect to APM Server at http://host.docker.internal:8200/intake/v2/events. Although not necessarily related to SSL, some related SSL configurations corresponding the current connection are logged at INFO level.
+2025-11-03 15:56:14 2025-11-03 14:56:14,143 [elastic-apm-server-reporter] ERROR co.elastic.apm.agent.report.IntakeV2ReportingEventHandler - Failed to handle event of type METRICSET_JSON_WRITER with this error: Connection refused
+
+2025-11-03 15:58:26 2025-11-03 14:58:26,162 [elastic-apm-server-reporter] ERROR co.elastic.apm.agent.report.AbstractIntakeApiHandler - Error sending data to APM server: Unexpected end of file from server, response code is -1
+
+
+2025-11-03 16:14:02 {"log.level":"info","@timestamp":"2025-11-03T15:14:02.436Z","message":"Running on default policy with Fleet Server integration","component":{"binary":"fleet-server","dataset":"elastic_agent.fleet_server","id":"fleet-server-fleetserver-output-df807d71-94ec-4a1a-a776-97c312dcd3be","type":"fleet-server"},"log":{"source":"fleet-server-fleetserver-output-df807d71-94ec-4a1a-a776-97c312dcd3be"},"ecs.version":"1.6.0","service.name":"fleet-server","service.type":"fleet-server","state":"HEALTHY","ecs.version":"1.6.0"}
+
+
+
+
 

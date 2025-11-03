@@ -54,3 +54,7 @@ sudo elastic-agent enroll   \\   --fleet-server-es=https://localhost:8220 \\   -
 
 
 
+
+Error response from daemon: cannot stop container: 0bfcb831d4fa7b260a55a48d37494800e45aad0571e51ba97b970115637bf550: container 0bfcb831d4fa PID 866 is zombie and can not be killed. Use the --init option when creating containers to run an init inside the container that forwards signals and reaps processes
+
+
