@@ -76,6 +76,7 @@ services:
   ## node elastic 01
   es01:
     hostname: es01-server
+    container_name: es01-server
     depends_on:
       setup:
         condition: service_healthy
@@ -123,6 +124,7 @@ services:
   ## node elastic 02
   es02:
     hostname: es02-server
+    container_name: es02-server
     depends_on:
       - es01
     image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
@@ -166,6 +168,7 @@ services:
   ## node elastic 03
   es03:
     hostname: es03-server
+    container_name: es03-server
     depends_on:
       - es02
     image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
@@ -264,16 +267,17 @@ services:
     ports:
       - ${FLEET_PORT}:8220
       - ${APMSERVER_PORT}:8200
-      - 6791:6791
     user: root
     environment:
       - FLEET_URL=https://fleet-server:8220
       - FLEET_SERVER_ENABLE=true
-      - FLEET_SERVER_ELASTICSEARCH_HOST=https://es01:9200
+      - FLEET_INSECURE=true
+      - FLEET_SERVER_ELASTICSEARCH_HOST=https://es01-server:9200
       - FLEET_SERVER_ELASTICSEARCH_CA=/certs/ca/ca.crt
+      - FLEET_SERVER_ELASTICSEARCH_INSECURE=true
       - FLEET_SERVER_INSECURE_HTTP=true
-      - FLEET_SERVER_SERVICE_TOKEN=AAEAAWVsYXN0aWMvZmxlZXQtc2VydmVyL3Rva2VuLTE3NjE3NDg3ODg5MjA6azVpLUtRaVRTNmk4MlZFMDRGeEprdw
-      - FLEET_SERVER_POLICY_ID=fleet-server-policy
+      - FLEET_SERVER_SERVICE_TOKEN=AAEAAWVsYXN0aWMvZmxlZXQtc2VydmVyL3Rva2VuLTE3NjIxNzU2Njg3Njk6YVR0Y0FUWDRSTlNMa3Z3QU9Sdnc5UQ
+      - FLEET_SERVER_POLICY_NAME=fleet-server-policy
 
 
 #      - FLEET_URL=https://fleet-server:8220
@@ -317,8 +321,9 @@ services:
     environment:
       - "CATALINA_OPTS=\
       -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=1099 -Dcom.sun.management.jmxremote.rmi.port=1099 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=127.0.0.1 \
-      -javaagent:/usr/local/tomcat/bin/monitoring/elastic-apm-agent-1.54.0.jar -Delastic.apm.service_name=TestLocal -Delastic.apm.application_packages=* -Delastic.apm.server_url=http://host.docker.internal:8200 -Delastic.apm.environment=TEST \
       -javaagent:/usr/local/tomcat/bin/monitoring/jmx_prometheus_javaagent-1.4.0.jar=9115:/usr/local/tomcat/bin/monitoring/config.yaml"
+
+##        -javaagent:/usr/local/tomcat/bin/monitoring/elastic-apm-agent-1.54.0.jar -Delastic.apm.service_name=TestLocal -Delastic.apm.application_packages=* -Delastic.apm.server_url=http://host.docker.internal:8200 -Delastic.apm.environment=TEST \
     restart: unless-stopped
 #    networks:
  #     - elastic
@@ -329,6 +334,14 @@ services:
       - "./resources/prom/jmxExporter/:/usr/local/tomcat/bin/monitoring/"
       - "./resources/elk/elastic-apm-agent-1.54.0.jar:/usr/local/tomcat/bin/monitoring/elastic-apm-agent-1.54.0.jar"
 
+
+  ## docker a simple nginx service  -- add a prometheus exporter in it
+#  nginx:
+#    image: nginx:latest
+#    ports:
+#      - 80:90
+
+
 ## docker run --name prometheus -d -p 127.0.0.1:9090:9090 prom/prometheus
   prometheus:
     container_name: prometheus-server
@@ -337,8 +350,8 @@ services:
     ports:
       - 127.0.0.1:9090:9090
       - 127.0.0.1:9201:9201
-    networks:
-      - elastic
+#    networks:
+#      - elastic
     volumes:
       - "./resources/prom/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml"
 

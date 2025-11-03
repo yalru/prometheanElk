@@ -148,6 +148,11 @@ FLEET_SERVER_CERT
 https://www.elastic.co/docs/reference/fleet/secure-connections
 
 
+-> creation de fleet policy : virer les anciennes qui poluaient et posaient probleme 
+set du flag default 
+-> 
+
+
 
 
 ## Elastic APM
